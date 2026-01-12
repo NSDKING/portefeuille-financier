@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="rootPane" minHeight="650.0" minWidth="1000.0" prefHeight="768.0" prefWidth="1200.0" 
+            styleClass="main-background" xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ.projet.controller.MainController">
+   
+   <left>
+      <VBox prefWidth="240.0" spacing="8.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="app-title" text="Aura Finance">
+               <VBox.margin><Insets bottom="30.0" /></VBox.margin>
+            </Label>
+            <Button fx:id="btnDashboard" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="nav-button, nav-button-active" text="📊  Dashboard" />
+            <Button fx:id="btnAssets" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="nav-button" text="💰  Mes Actifs" />
+            <Button fx:id="btnHistory" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="nav-button" text="📜  Historique" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Separator opacity="0.1" />
+            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="nav-button, settings-button" text="⚙️  Paramètres" />
+         </children>
+         <padding><Insets bottom="25.0" left="15.0" right="15.0" top="35.0" /></padding>
+      </VBox>
+   </left>
+   
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="content-scrollpane" BorderPane.alignment="CENTER">
+         <content>
+            <VBox spacing="30.0" styleClass="content-area">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label styleClass="section-title" text="Vue d'ensemble" />
+                              <Label styleClass="section-subtitle" text="Suivi en temps réel de vos investissements" />
+                           </children>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnRefresh" mnemonicParsing="false" styleClass="refresh-button" text="Actualiser" />
+                     </children>
+                  </HBox>
+                  
+                  <HBox spacing="25.0">
+                     <children>
+                        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="card-title" text="VALEUR TOTALE" />
+                              <Label fx:id="totalValueLabel" styleClass="card-value" text="0.00 €" />
+                           </children>
+                        </VBox>
+                        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="card-title" text="PERFORMANCE GLOBALE" />
+                              <HBox alignment="BASELINE_LEFT" spacing="12.0">
+                                 <children>
+                                    <Label fx:id="profitLabel" styleClass="card-value, profit-positive" text="+0.00 €" />
+                                    <Label fx:id="profitPercentageLabel" styleClass="profit-pill-positive" text="+0.00%" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="card-title" text="CASH DISPONIBLE" />
+                              <Label fx:id="cashLabel" styleClass="card-value" text="0.00 €" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  
+                  <HBox spacing="25.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox styleClass="chart-container" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="card-title" text="ÉVOLUTION &amp; ÉVÉNEMENTS" />
+                              <LineChart fx:id="performanceChart" animated="true" createSymbols="true" legendVisible="false" VBox.vgrow="ALWAYS">
+                                <xAxis><CategoryAxis side="BOTTOM" tickLabelFill="#94a3b8" /></xAxis>
+                                <yAxis><NumberAxis side="LEFT" tickLabelFill="#94a3b8" /></yAxis>
+                              </LineChart>
+                           </children>
+                        </VBox>
+                        
+                        <VBox maxWidth="400.0" prefWidth="350.0" styleClass="chart-container" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <Label styleClass="card-title" text="RÉPARTITION DES ACTIFS" />
+                              <PieChart fx:id="allocationChart" labelsVisible="true" legendVisible="false" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0" /></padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

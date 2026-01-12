@@ -16,6 +16,7 @@ public class Event {
         this.impactEstime = impactEstime;
         this.type = type;
     }
+    public Event() {}
 
     // Getters indispensables pour David (JSON) et Salom (UI)
     public LocalDate getDate() { return date; }

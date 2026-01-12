@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="20.0" styleClass="main-background" 
+      stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ.projet.controller.LoginController">
+    
+    <padding><Insets bottom="40" left="40" right="40" top="40" /></padding>
+
+    <Label styleClass="app-title" text="Aura Finance" />
+    <Label styleClass="section-subtitle" text="Veuillez déverrouiller votre portefeuille" />
+
+    <VBox spacing="10.0" maxWidth="300.0" styleClass="login-vbox">
+        <TextField fx:id="usernameField" promptText="Nom d'utilisateur" />
+        <PasswordField fx:id="passwordField" promptText="Mot de passe" />
+    </VBox>
+
+    <HBox spacing="15.0" alignment="CENTER">
+        <Button fx:id="btnLogin" onAction="#handleLogin" text="Se connecter" styleClass="refresh-button" />
+        <Button fx:id="btnRegister" onAction="#handleRegister" text="Créer un compte" styleClass="button-secondary" />
+    </HBox>
+
+    <Label fx:id="errorLabel" styleClass="error-message" />
+
+ </VBox>

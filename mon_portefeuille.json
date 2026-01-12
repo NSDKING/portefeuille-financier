@@ -1,0 +1,14 @@
+{
+  "nom": "Mon Portefeuille",
+  "description": "Investissements long terme",
+  "monnaieReference": "EUR",
+  "cash": 5000.0,
+  "transactions": [
+    {
+      "prixUnitaire": 150.0,
+      "quantite": 10.0,
+      "date": "2024-01-01",
+      "frais": "5.0"
+    }
+  ]
+}
