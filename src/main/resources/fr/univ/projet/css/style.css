@@ -6,7 +6,7 @@
     -fx-text-muted: #94a3b8;      /* Texte gris */
     -fx-success: #22c55e;         /* Vert */
     -fx-danger: #ef4444;          /* Rouge */
-    
+
     -fx-font-family: 'Segoe UI', sans-serif;
 }
 
@@ -239,4 +239,169 @@
     -fx-text-fill: -fx-success;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
+}
+
+
+/* Style pour les ComboBox (Devise et Type de compte) */
+.combo-box {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 5;
+    -fx-text-fill: white;
+}
+
+.combo-box .label {
+    -fx-text-fill: #f8fafc;
+}
+
+.combo-box .list-view {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #f8fafc;
+    -fx-background-color: transparent;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #3b82f6; /* Couleur primaire au survol */
+}
+
+/* Style pour les champs de texte */
+.text-field, .password-field {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #64748b;
+    -fx-padding: 10;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+}
+
+/* --- TITRES ET LABELS --- */
+
+.app-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.register-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #94a3b8;
+}
+
+.section-subtitle {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3b82f6;
+    -fx-padding: 5 0 2 0;
+}
+
+/* --- BOUTONS --- */
+
+.refresh-button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.refresh-button:hover {
+    -fx-background-color: #2563eb;
+}
+
+.button-secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94a3b8;
+    -fx-border-color: #475569;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.button-secondary:hover {
+    -fx-border-color: #f8fafc;
+    -fx-text-fill: #f8fafc;
+}
+
+/* Message d'erreur */
+.error-message {
+    -fx-text-fill: #ef4444;
+    -fx-font-size: 12px;
+}
+
+/* --- STYLES POUR LES CHECKBOX --- */
+
+.check-box {
+    -fx-text-fill: #94a3b8; /* Gris ardoise clair */
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+/* La petite boîte de la CheckBox */
+.check-box .box {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+/* Quand la CheckBox est survolée */
+.check-box:hover .box {
+    -fx-border-color: #3b82f6;
+}
+
+/* La marque de coche (V) quand sélectionnée */
+.check-box:selected .mark {
+    -fx-background-color: #3b82f6;
+    -fx-shape: "M1.73,12.91L8.1,19.28L22.79,4.59L20.66,2.47L8.1,15.04L3.86,10.8L1.73,12.91Z";
+}
+
+/* Changement de couleur du texte quand coché */
+.check-box:selected {
+    -fx-text-fill: #f8fafc;
+}
+
+/* État désactivé (pour le compte Courant qui est requis) */
+.check-box:disabled {
+    -fx-opacity: 0.6;
+}
+
+/* --- SECTIONS DE FORMULAIRE --- */
+
+/* Conteneur pour grouper les CheckBox avec un léger fond */
+.checkbox-group {
+    -fx-background-color: rgba(30, 41, 59, 0.5);
+    -fx-padding: 15;
+    -fx-background-radius: 8;
+    -fx-border-color: #334155;
+    -fx-border-width: 1;
+}
+
+.section-subtitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3b82f6;
+    -fx-padding: 0 0 5 0;
+}
+
+.portfolio-combo {
+    -fx-background-color: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-radius: 5;
+    -fx-text-fill: white;
+}
+
+.portfolio-combo .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: #1e293b;
 }

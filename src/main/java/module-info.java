@@ -8,6 +8,8 @@ module fr.univ.projet {
     opens fr.univ.projet.view to javafx.fxml;
     // Autorise JavaFX à accéder à ton contrôleur
     opens fr.univ.projet.controller to javafx.fxml;
+    opens fr.univ.projet.model to com.fasterxml.jackson.databind;
     
     exports fr.univ.projet;
+    exports fr.univ.projet.model;
 }

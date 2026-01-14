@@ -1,9 +1,10 @@
 package fr.univ.projet.controller;
 
+import fr.univ.projet.model.User;
+import fr.univ.projet.service.DataStorage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -16,30 +17,43 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        String user = usernameField.getText();
+        String user = usernameField.getText().trim();
         String pass = passwordField.getText();
 
-        // LOGIQUE DE SÉCURITÉ :
-        // 1. Vérifier si l'utilisateur existe
-        // 2. Tenter de déchiffrer le fichier avec 'pass'
-        if (validerConnexion(user, pass)) {
-            chargerDashboard();
-        } else {
-            errorLabel.setText("Identifiants incorrects ou clé invalide.");
+        if (user.isEmpty() || pass.isEmpty()) {
+            errorLabel.setText("Veuillez remplir tous les champs.");
+            return;
+        }
+
+        try {
+ 
+            User utilisateurConnecte = DataStorage.loadUserSecurely(user, pass);
+            
+            // Si on arrive ici, c'est que le déchiffrement a réussi !
+            chargerDashboard(utilisateurConnecte);
+            
+        } catch (Exception e) {
+            // L'erreur peut être : fichier inexistant ou mot de passe incorrect
+            errorLabel.setText("Identifiants incorrects ou accès refusé.");
+            System.err.println("Échec connexion : " + e.getMessage());
         }
     }
 
-    private boolean validerConnexion(String user, String pass) {
-        // Pour l'instant, on simule. Plus tard, on utilisera une classe SecurityService
-        return "admin".equals(user) && "1234".equals(pass);
-    }
-
-    private void chargerDashboard() {
+    private void chargerDashboard(User user) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/univ/projet/view/main-dashboard.fxml"));
+            Parent root = loader.load();
+
+            // Injection des données dans le MainController
+            MainController mainController = loader.getController();
+            mainController.setUserSession(user);
+
             Stage stage = (Stage) usernameField.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/fr/univ/projet/view/main-dashboard.fxml"));
             stage.getScene().setRoot(root);
+            stage.setTitle("Aura Finance - " + user.getUsername());
+            
         } catch (IOException e) {
+            errorLabel.setText("Erreur lors du chargement de l'interface.");
             e.printStackTrace();
         }
     }
@@ -47,9 +61,9 @@ public class LoginController {
     @FXML
     private void handleRegister() {
         try {
-                Stage stage = (Stage) usernameField.getScene().getWindow();
-                Parent root = FXMLLoader.load(getClass().getResource("/fr/univ/projet/view/register.fxml"));
-                stage.getScene().setRoot(root);
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/fr/univ/projet/view/register.fxml"));
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
