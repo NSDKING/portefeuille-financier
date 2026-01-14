@@ -118,21 +118,39 @@ public class Dashboard {
 
     // ================= POINT + TOOLTIP =================
 
-    private void ajouterPointGraphique(double valeur) {
-        int x = series.getData().size() + 1;
+    private void ajouterPointGraphique(double initiale, double actuelle) {
 
-        XYChart.Data<Number, Number> point =
-                new XYChart.Data<>(x, valeur);
+    int x = series.getData().size() + 1;
 
-        series.getData().add(point);
+    XYChart.Data<Number, Number> point =
+            new XYChart.Data<>(x, actuelle);
 
-        point.nodeProperty().addListener((obs, oldNode, newNode) -> {
-            if (newNode != null) {
-                Tooltip.install(newNode,
-                        new Tooltip("Valeur : " + valeur));
+    series.getData().add(point);
+
+    point.nodeProperty().addListener((obs, oldNode, newNode) -> {
+        if (newNode != null) {
+
+            boolean gain = actuelle >= initiale;
+
+            if (gain) {
+                newNode.setStyle("-fx-background-color: green;");
+            } else {
+                newNode.setStyle("-fx-background-color: red;");
             }
-        });
-    }
+
+            String message = gain ? "Gain" : "Perte";
+
+            Tooltip.install(newNode,
+                new Tooltip(
+                    message +
+                    "\nInitiale : " + initiale +
+                    "\nActuelle : " + actuelle
+                )
+            );
+        }
+    });
+}
+
 
     // ================= ZOOM =================
 
