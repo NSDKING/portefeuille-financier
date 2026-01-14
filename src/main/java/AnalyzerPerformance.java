@@ -50,7 +50,10 @@ public class AnalyzerPerformance {
     public static double rendementGlobal(List<Actif> portefeuille) {
         double initial = valeurInitialeTotale(portefeuille);
         double actuel = valeurActuelleTotale(portefeuille);
-        return ((actuel - initial) / initial) * 100;
+        if (portefeuille.isEmpty()) {
+            return 0;
+}
+    return ((actuel - initial) / initial) * 100;
     }
 
     // Rendement moyen des actifs
@@ -59,6 +62,9 @@ public class AnalyzerPerformance {
         for (Actif a : portefeuille) {
             total += rendement(a);
         }
+        if (portefeuille.isEmpty()) {
+            return 0;
+}
         return total / portefeuille.size();
     }
 }
