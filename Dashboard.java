@@ -108,12 +108,31 @@ public class Dashboard {
                 return new Actif(nom.getText(), 0, Double.parseDouble(valeur.getText()));
             }
             return null;
+            return new Actif(
+                nom.getText(),
+                Double.parseDouble(initiale.getText()),
+                Double.parseDouble(actuelle.getText())
+            );
         });
 
         dialog.showAndWait().ifPresent(actif -> {
             portefeuille.add(actif);
-            ajouterPointGraphique(actif.getValeurActuelle());
+            ajouterPointGraphique(
+            actif.getValeurInitiale(),
+            actif.getValeurActuelle()
+            );
         });
+        TextField initiale = new TextField();
+        TextField actuelle = new TextField();
+
+        dialog.getDialogPane().setContent(
+            new VBox(10,
+            new Label("Nom :"), nom,
+            new Label("Valeur initiale :"), initiale,
+            new Label("Valeur actuelle :"), actuelle
+    )
+);
+
     }
 
     // ================= POINT + TOOLTIP =================
