@@ -1,0 +1,64 @@
+package service;
+
+import model.Actif;
+import java.util.List;
+
+public class AnalyzerPerformance {
+
+    // ===================== ACTIF =====================
+
+    // Gain ou perte d'un actif
+    public static double gain(Actif actif) {
+        return actif.getValeurActuelle() - actif.getValeurInitiale();
+    }
+
+    // Rendement en pourcentage d'un actif
+    public static double rendement(Actif actif) {
+        return (gain(actif) / actif.getValeurInitiale()) * 100;
+    }
+
+    // ===================== PORTEFEUILLE =====================
+
+    // Gain total du portefeuille
+    public static double gainTotal(List<Actif> portefeuille) {
+        double total = 0;
+        for (Actif a : portefeuille) {
+            total += gain(a);
+        }
+        return total;
+    }
+
+    // Valeur initiale totale
+    public static double valeurInitialeTotale(List<Actif> portefeuille) {
+        double total = 0;
+        for (Actif a : portefeuille) {
+            total += a.getValeurInitiale();
+        }
+        return total;
+    }
+
+    // Valeur actuelle totale
+    public static double valeurActuelleTotale(List<Actif> portefeuille) {
+        double total = 0;
+        for (Actif a : portefeuille) {
+            total += a.getValeurActuelle();
+        }
+        return total;
+    }
+
+    // Rendement global du portefeuille (%)
+    public static double rendementGlobal(List<Actif> portefeuille) {
+        double initial = valeurInitialeTotale(portefeuille);
+        double actuel = valeurActuelleTotale(portefeuille);
+        return ((actuel - initial) / initial) * 100;
+    }
+
+    // Rendement moyen des actifs
+    public static double rendementMoyen(List<Actif> portefeuille) {
+        double total = 0;
+        for (Actif a : portefeuille) {
+            total += rendement(a);
+        }
+        return total / portefeuille.size();
+    }
+}
