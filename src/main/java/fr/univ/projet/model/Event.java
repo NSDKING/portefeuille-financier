@@ -6,8 +6,8 @@ public class Event {
     private LocalDate date;
     private String label;
     private String impact;
-    private double impactEstime; // ex: -0.15 pour une baisse de 15%
-    private String type;         // "CRIPTO", "BOURSE", ou "GLOBAL"
+    private double impactEstime; 
+    private String type;         
 
     public Event(LocalDate date, String label, String impact, double impactEstime, String type) {
         this.date = date;
