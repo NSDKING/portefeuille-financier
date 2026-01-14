@@ -1,9 +1,10 @@
-package service;
+package fr.univ.projet;
 
-import model.Actif;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+
+import fr.univ.projet.model.Actif;
 
 public class ExportCSV {
 
@@ -21,8 +22,8 @@ public class ExportCSV {
 
                 writer.write(
                         a.getNom() + "," +
-                        a.getValeurInitiale() + "," +
-                        a.getValeurActuelle() + "," +
+                        a.getPrixInitiale() + "," +
+                        a.getPrixActuel() + "," +
                         gain + "," +
                         rendement + "\n"
                 );

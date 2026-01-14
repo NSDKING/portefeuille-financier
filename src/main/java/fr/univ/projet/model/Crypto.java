@@ -8,8 +8,8 @@ public class Crypto extends Actif {
     private String reseau;  
     private String deviseOrigine;  
 
-    public Crypto(String ticker, String nom, double prixActuel, String deviseOrigine, String addresseBlockchain, String reseau) {
-        super(nom, prixActuel, ticker); 
+    public Crypto(String ticker, String nom, double prixActuel, String deviseOrigine, String addresseBlockchain, String reseau, double prixInitiale) {
+        super(nom, prixActuel, ticker, prixInitiale);
         this.deviseOrigine = deviseOrigine;
         this.addresseBlockchain = addresseBlockchain;
         this.reseau = reseau;
@@ -24,11 +24,7 @@ public class Crypto extends Actif {
          return this.prixActuel;
     }
 
-    /**
-     * Calcule la valeur de la ligne de crypto dans la monnaie de référence
-     * @param monnaieRef La monnaie choisie par l'utilisateur (ex: "EUR")
-     * @param quantite La quantité détenue
-     */
+ 
     public double calculerValeurMonnaie(String monnaieRef, double quantite) {  
         double valeurEnDeviseOrigine = this.prixActuel * quantite;
 

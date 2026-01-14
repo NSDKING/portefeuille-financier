@@ -1,7 +1,8 @@
-package service;
+package fr.univ.projet;
 
-import model.Actif;
 import java.util.List;
+
+import fr.univ.projet.model.Actif;
 
 public class AnalyzerPerformance {
 
@@ -9,12 +10,12 @@ public class AnalyzerPerformance {
 
     // Gain ou perte d'un actif
     public static double gain(Actif actif) {
-        return actif.getValeurActuelle() - actif.getValeurInitiale();
+        return actif.getPrixActuel() - actif.getPrixInitiale();
     }
 
     // Rendement en pourcentage d'un actif
     public static double rendement(Actif actif) {
-        return (gain(actif) / actif.getValeurInitiale()) * 100;
+        return (gain(actif) / actif.getPrixInitiale()) * 100;
     }
 
     // ===================== PORTEFEUILLE =====================
@@ -32,7 +33,7 @@ public class AnalyzerPerformance {
     public static double valeurInitialeTotale(List<Actif> portefeuille) {
         double total = 0;
         for (Actif a : portefeuille) {
-            total += a.getValeurInitiale();
+            total += a.getPrixInitiale();
         }
         return total;
     }
@@ -41,7 +42,7 @@ public class AnalyzerPerformance {
     public static double valeurActuelleTotale(List<Actif> portefeuille) {
         double total = 0;
         for (Actif a : portefeuille) {
-            total += a.getValeurActuelle();
+            total += a.getPrixActuel();
         }
         return total;
     }
