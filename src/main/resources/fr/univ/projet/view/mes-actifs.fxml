@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
 <VBox spacing="20.0" styleClass="content-area" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univ.projet.controller.AssetsController">
-    <padding>
-        <Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/>
-    </padding>
+    <padding><Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/></padding>
 
     <HBox spacing="20.0">
         <VBox styleClass="summary-card" HBox.hgrow="ALWAYS">
@@ -25,29 +22,28 @@
             <Label text="Liste de vos actifs" style="-fx-font-size: 18; -fx-text-fill: white; -fx-font-weight: bold;"/>
             <TableView fx:id="assetsTable" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colSymbol" text="Symbole" prefWidth="100"/>
-                    <TableColumn fx:id="colName" text="Nom" prefWidth="150"/>
-                    <TableColumn fx:id="colQty" text="Quantité" prefWidth="100"/>
+                    <TableColumn fx:id="colSymbol" text="Ticker" prefWidth="100"/>
+                    <TableColumn fx:id="colQty" text="Quantité" prefWidth="120"/>
                     <TableColumn fx:id="colPrice" text="Prix Unit." prefWidth="120"/>
-                    <TableColumn fx:id="colValue" text="Valeur Totale" prefWidth="120"/>
+                    <TableColumn fx:id="colValue" text="Valeur Totale" prefWidth="150"/>
                 </columns>
             </TableView>
         </VBox>
 
-        <VBox spacing="15.0" prefWidth="320.0" styleClass="buy-panel" style="-fx-background-color: #1e293b; -fx-padding: 20; -fx-background-radius: 10;">
-            <Label text="Achat Rapide (Crypto)" style="-fx-font-size: 16; -fx-text-fill: white; -fx-font-weight: bold;"/>
-            
-            <Label text="Sélectionner Crypto" style="-fx-text-fill: #94a3b8;"/>
-            <ComboBox fx:id="cryptoSelector" maxWidth="Infinity" />
-            
-            <Label text="Montant à investir (€)" style="-fx-text-fill: #94a3b8;"/>
-            <TextField fx:id="amountField" promptText="Ex: 500" />
-            
-            <Separator opacity="0.1"/>
-            <Label fx:id="previewLabel" text="Estimation : 0.00 units" style="-fx-text-fill: #38bdf8;"/>
-            
-            <Button fx:id="buyButton" text="CONFIRMER L'ACHAT" onAction="#handleBuyAction" maxWidth="Infinity" 
-                    style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+        <VBox spacing="15.0" prefWidth="320.0">
+            <VBox spacing="12.0" style="-fx-background-color: #1e293b; -fx-padding: 20; -fx-background-radius: 10;">
+                <Label text="🛒 ACHAT RAPIDE" style="-fx-font-size: 16; -fx-text-fill: #3b82f6; -fx-font-weight: bold;"/>
+                <ComboBox fx:id="tickerSelector" maxWidth="Infinity" promptText="Choisir un actif"/>
+                <TextField fx:id="amountField" promptText="Montant en € (ex: 500)"/>
+                <Button onAction="#handleBuyAction" text="CONFIRMER L'ACHAT" maxWidth="Infinity" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            </VBox>
+
+            <VBox spacing="12.0" style="-fx-background-color: #1e293b; -fx-padding: 20; -fx-background-radius: 10;">
+                <Label text="💰 VENTE" style="-fx-font-size: 16; -fx-text-fill: #10b981; -fx-font-weight: bold;"/>
+                <ComboBox fx:id="ownedAssetsSelector" maxWidth="Infinity" promptText="Choisir un actif détenu"/>
+                <TextField fx:id="sellQtyField" promptText="Quantité à vendre"/>
+                <Button onAction="#handleSellAction" text="CONFIRMER LA VENTE" maxWidth="Infinity" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            </VBox>
         </VBox>
     </HBox>
 </VBox>
