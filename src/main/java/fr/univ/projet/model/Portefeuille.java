@@ -41,6 +41,10 @@ public class Portefeuille implements Cloneable {
 
     public void ajouterTransaction(Transaction transaction) { transactions.add(transaction); }
     public void ajouterEvent(Event event) { events.add(event); }
+    public void addTransaction(Transaction tx) {
+        if (this.transactions == null) this.transactions = new java.util.ArrayList<>();
+        this.transactions.add(tx);
+    }
 
     public double calculerValeurTotale() {
         double valeurActifs = transactions.stream()

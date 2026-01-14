@@ -12,7 +12,7 @@ public class Actif {
         this.nom = nom;
         this.valeurInitiale = valeurInitiale;
         this.valeurActuelle = valeurActuelle;
-    }
+    }   ²
 
     public String getNom() {
         return nom;

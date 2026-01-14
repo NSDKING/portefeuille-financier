@@ -5,12 +5,12 @@ import java.util.List;
 public class Transaction {
     private double quantite;
     private String date;
-    private String frais;
+    private double frais;
     private double prixUnitaire;
     private List<Actif> actifs;
 
 
-    public Transaction(double prixUnitaire, double quantite, String date, String frais) {
+    public Transaction(double prixUnitaire, double quantite, String date, double frais) {
         this.prixUnitaire = prixUnitaire;
         this.quantite = quantite;
         this.date = date;
@@ -26,7 +26,7 @@ public class Transaction {
         return quantite;
     }
 
-    public String getFrais() {
+    public double getFrais() {
         return frais;
     }
 

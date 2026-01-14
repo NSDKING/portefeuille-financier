@@ -54,7 +54,6 @@ public class DataStorage {
         return mapper.readValue(decryptedJson, User.class);
     }
 
-    // --- Méthode de secours pour sauvegarder un User (utile après une transaction) ---
     public static void saveUser(User user, String password) throws Exception {
         saveNewUser(user.getUsername(), password, user);
     }
