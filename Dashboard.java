@@ -1,5 +1,6 @@
 package ui;
 
+import service.ExportCSV;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -81,6 +82,15 @@ public class Dashboard {
 
         HBox box = new HBox(10, btnAjouter);
         root.setBottom(box);
+        
+        Button btnExporter = new Button("Exporter CSV");
+        btnExporter.setOnAction(e ->
+            ExportCSV.exporterPortefeuille(portefeuille, "portefeuille.csv")
+        );
+        
+        HBox box = new HBox(10, btnAjouter, btnExporter);
+        root.setBottom(box);
+
     }
 
     // ================= AJOUT ACTIF =================
