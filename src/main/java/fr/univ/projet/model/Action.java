@@ -1,14 +1,18 @@
 package fr.univ.projet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("Action")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Action extends Actif {
     private String entreprise;
     private String bourse; 
     private String deviseOrigine;  
 
-
+    public Action() {
+            super();
+    }
     public Action(String ticker, String nom, double prixActuel, String deviseOrigine, String entreprise, String bourse, double prixInitiale) {
         super(nom, prixActuel, ticker, prixInitiale); 
         this.deviseOrigine = deviseOrigine;

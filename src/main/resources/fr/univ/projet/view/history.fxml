@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" styleClass="content-area" stylesheets="@../css/style.css" 
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="fr.univ.projet.controller.HistoryController">
+   <children>
+      <VBox>
+         <children>
+            <Label styleClass="section-title" text="Historique des Transactions" />
+            <Label styleClass="section-subtitle" text="Liste complète de vos opérations d'achat et de vente" />
+         </children>
+      </VBox>
+      
+      <TableView fx:id="historyTable" VBox.vgrow="ALWAYS" styleClass="transaction-table">
+        <columns>
+          <TableColumn fx:id="colDate" prefWidth="150.0" text="Date" />
+          <TableColumn fx:id="colType" prefWidth="100.0" text="Type" />
+          <TableColumn fx:id="colSymbol" prefWidth="120.0" text="Actif (Ticker)" />
+          <TableColumn fx:id="colQty" prefWidth="100.0" text="Quantité" />
+          <TableColumn fx:id="colPrice" prefWidth="120.0" text="Prix Unitaire" />
+          <TableColumn fx:id="colTotal" prefWidth="150.0" text="Total" />
+        </columns>
+         <placeholder>
+            <Label text="Aucune transaction trouvée." />
+         </placeholder>
+      </TableView>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+</VBox>

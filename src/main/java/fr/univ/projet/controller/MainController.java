@@ -57,6 +57,7 @@ public class MainController {
         // 2. Configurer les actions des boutons de la Sidebar
         btnDashboard.setOnAction(e -> showDashboard());
         btnAssets.setOnAction(e -> showAssetsPage());
+        btnHistory.setOnAction(e -> showHistoryPage());
         
         if (btnRefresh != null) {
             btnRefresh.setOnAction(e -> rafraichirInterface());
@@ -99,11 +100,28 @@ public class MainController {
         }
     }
 
+    private void showHistoryPage() {
+        try {
+            // Vérifiez bien le nom du fichier ici (history vs historique)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fr/univ/projet/view/history.fxml"));
+            
+            VBox historyView = loader.load();
+
+            rootPane.setCenter(historyView);
+            updateActiveButton(btnHistory);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur fatale : Impossible de charger le fichier FXML de l'historique.");
+        } catch (NullPointerException e) {
+            System.err.println("Erreur : Le chemin du fichier FXML est incorrect (Location is not set).");
+        }
+    }
     private void updateActiveButton(Button activeBtn) {
         // Liste de tous les boutons pour réinitialiser le style
         btnDashboard.getStyleClass().remove("nav-button-active");
         btnAssets.getStyleClass().remove("nav-button-active");
-        
+        btnHistory.getStyleClass().remove("nav-button-active"); 
         // Appliquer le style au bouton cliqué
         activeBtn.getStyleClass().add("nav-button-active");
     }

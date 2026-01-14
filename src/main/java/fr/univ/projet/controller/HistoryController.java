@@ -1,60 +1,96 @@
 package fr.univ.projet.controller;
 
-import fr.univ.projet.model.*;
+import fr.univ.projet.model.Actif;
+import fr.univ.projet.model.Portefeuille;
+import fr.univ.projet.model.Transaction;
 import fr.univ.projet.service.SessionManager;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.util.Collections;
+import java.util.List;
+
 public class HistoryController {
 
-    @FXML private TableView<TransactionRow> historyTable;
-    @FXML private TableColumn<TransactionRow, String> colType, colDate, colSymbol;
-    @FXML private TableColumn<TransactionRow, Number> colQty, colPrice, colFees, colTotal;
-
-    private final ObservableList<TransactionRow> historyData = FXCollections.observableArrayList();
+    @FXML private TableView<Transaction> historyTable;
+    @FXML private TableColumn<Transaction, String> colDate;
+    @FXML private TableColumn<Transaction, String> colType;
+    @FXML private TableColumn<Transaction, String> colSymbol;
+    @FXML private TableColumn<Transaction, Double> colQty;
+    @FXML private TableColumn<Transaction, Double> colPrice;
+    @FXML private TableColumn<Transaction, String> colTotal;
 
     @FXML
     public void initialize() {
-        // Liaison des colonnes
-        colType.setCellValueFactory(d -> d.getValue().typeProperty());
-        colDate.setCellValueFactory(d -> d.getValue().dateProperty());
-        colSymbol.setCellValueFactory(d -> d.getValue().symbolProperty());
-        colQty.setCellValueFactory(d -> d.getValue().quantityProperty());
-        colPrice.setCellValueFactory(d -> d.getValue().priceProperty());
-        colFees.setCellValueFactory(d -> d.getValue().feesProperty());
-        colTotal.setCellValueFactory(d -> d.getValue().totalProperty());
-
-        historyTable.setItems(historyData);
-        loadHistory();
+        setupTableColumns();
+        loadTransactionData();
     }
 
-    private void loadHistory() {
-        User user = SessionManager.getCurrentUser();
-        if (user == null || user.getPortefeuilles().isEmpty()) return;
+    private void setupTableColumns() {
+        // 1. Date
+        colDate.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getDate()));
 
-        historyData.clear();
-        Portefeuille p = user.getPortefeuilles().get(0); // Portefeuille principal
+        // 2. Type (Achat/Vente) avec couleur
+        colType.setCellValueFactory(cell -> new SimpleStringProperty(
+                cell.getValue().getQuantite() > 0 ? "ACHAT" : "VENTE"
+        ));
+        configureTypeColumnStyling();
 
-        for (Transaction t : p.getTransactions()) {
-            // On récupère le ticker de l'actif lié
-            String symbol = t.getActifs().isEmpty() ? "Inconnu" : t.getActifs().get(0).getTicker();
+        // 3. Symbole (Ticker)
+        colSymbol.setCellValueFactory(cell -> {
+            List<Actif> actifs = cell.getValue().getActifs();
+            String ticker = (actifs != null && !actifs.isEmpty()) ? actifs.get(0).getTicker() : "N/A";
+            return new SimpleStringProperty(ticker);
+        });
+
+        // 4. Quantité (Valeur absolue pour l'affichage)
+        colQty.setCellValueFactory(cell -> new SimpleObjectProperty<>(Math.abs(cell.getValue().getQuantite())));
+
+        // 5. Prix Unitaire
+        colPrice.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getPrixUnitaire()));
+
+        // 6. Total calculé
+        colTotal.setCellValueFactory(cell -> {
+            double total = Math.abs(cell.getValue().getQuantite() * cell.getValue().getPrixUnitaire());
+            return new SimpleStringProperty(String.format("%.2f €", total));
+        });
+    }
+
+    private void configureTypeColumnStyling() {
+        colType.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    if (item.equals("ACHAT")) {
+                        setStyle("-fx-text-fill: #10b981; -fx-font-weight: bold;");
+                    } else {
+                        setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadTransactionData() {
+        if (SessionManager.getCurrentUser() != null && !SessionManager.getCurrentUser().getPortefeuilles().isEmpty()) {
+            Portefeuille p = SessionManager.getCurrentUser().getPortefeuilles().get(0);
             
-            // Déterminer si c'est un achat ou une vente selon la quantité
-            String type = t.getQuantite() > 0 ? "ACHAT" : "VENTE";
+            // On crée une copie pour ne pas modifier la liste originale du modèle
+            ObservableList<Transaction> transactions = FXCollections.observableArrayList(p.getTransactions());
             
-            historyData.add(new TransactionRow(
-                type,
-                t.getDate(),
-                symbol,
-                Math.abs(t.getQuantite()), // On affiche la quantité en valeur absolue
-                t.getPrixUnitaire(),
-                t.getFrais()
-            ));
+            // Trier par date décroissante (la plus récente en haut)
+            Collections.reverse(transactions);
+            
+            historyTable.setItems(transactions);
         }
-        
-        // Trier par date (la plus récente en haut)
-        historyData.sort((a, b) -> b.dateProperty().get().compareTo(a.dateProperty().get()));
     }
 }
