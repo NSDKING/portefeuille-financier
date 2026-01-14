@@ -35,6 +35,7 @@
                 <Label text="🛒 ACHAT RAPIDE" style="-fx-font-size: 16; -fx-text-fill: #3b82f6; -fx-font-weight: bold;"/>
                 <ComboBox fx:id="tickerSelector" maxWidth="Infinity" promptText="Choisir un actif"/>
                 <TextField fx:id="amountField" promptText="Montant en € (ex: 500)"/>
+                <Label fx:id="previewLabel" text="Estimation : 0.00 units" style="-fx-text-fill: #94a3b8; -fx-font-size: 12;"/>
                 <Button onAction="#handleBuyAction" text="CONFIRMER L'ACHAT" maxWidth="Infinity" style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
             </VBox>
 
@@ -42,6 +43,7 @@
                 <Label text="💰 VENTE" style="-fx-font-size: 16; -fx-text-fill: #10b981; -fx-font-weight: bold;"/>
                 <ComboBox fx:id="ownedAssetsSelector" maxWidth="Infinity" promptText="Choisir un actif détenu"/>
                 <TextField fx:id="sellQtyField" promptText="Quantité à vendre"/>
+                <Label fx:id="sellPreviewLabel" text="Estimation : 0.00 €" style="-fx-text-fill: #94a3b8; -fx-font-size: 12;"/>
                 <Button onAction="#handleSellAction" text="CONFIRMER LA VENTE" maxWidth="Infinity" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
             </VBox>
         </VBox>

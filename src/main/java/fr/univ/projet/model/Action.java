@@ -10,8 +10,7 @@ public class Action extends Actif {
 
 
     public Action(String ticker, String nom, double prixActuel, String deviseOrigine, String entreprise, String bourse, double prixInitiale) {
-        // Appel au constructeur de la classe mère Actif
-        super(nom, prixActuel, ticker, prixInitiale);
+        super(nom, prixActuel, ticker, prixInitiale); 
         this.deviseOrigine = deviseOrigine;
         this.entreprise = entreprise;
         this.bourse = bourse;

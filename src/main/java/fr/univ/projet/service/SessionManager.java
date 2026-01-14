@@ -13,4 +13,6 @@ public class SessionManager {
 
     public static User getCurrentUser() { return currentUser; }
     public static String getCurrentPassword() { return currentPassword; }
+    public static void setCurrentUser(User user) { currentUser = user; }
+    public static void setCurrentPassword(String password) { currentPassword = password; }
 }

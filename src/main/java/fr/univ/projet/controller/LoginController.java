@@ -28,12 +28,11 @@ public class LoginController {
         try {
  
             User utilisateurConnecte = DataStorage.loadUserSecurely(user, pass);
-            
-            // Si on arrive ici, c'est que le déchiffrement a réussi !
+            fr.univ.projet.service.SessionManager.setCurrentUser(utilisateurConnecte);
+            fr.univ.projet.service.SessionManager.setCurrentPassword(pass);
             chargerDashboard(utilisateurConnecte);
             
         } catch (Exception e) {
-            // L'erreur peut être : fichier inexistant ou mot de passe incorrect
             errorLabel.setText("Identifiants incorrects ou accès refusé.");
             System.err.println("Échec connexion : " + e.getMessage());
         }

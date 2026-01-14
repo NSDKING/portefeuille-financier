@@ -14,6 +14,7 @@ public abstract class Actif {
         this.prixActuel = prixActuel;
         this.ticker = ticker;
         this.prixInitiale = prixInitiale;
+        
     }
 
     public String getNom() {
@@ -35,7 +36,7 @@ public abstract class Actif {
     public double getPrixInitiale() {
         return prixInitiale;
     }
-    
+
     public void setPrixInitiale(double prixInitiale) {
         this.prixInitiale = prixInitiale;
     }
