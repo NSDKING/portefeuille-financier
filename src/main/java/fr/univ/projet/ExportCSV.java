@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import fr.univ.projet.model.Actif;
+import fr.univ.projet.service.AnalyzerPerformance;
 
 public class ExportCSV {
 

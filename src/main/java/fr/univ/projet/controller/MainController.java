@@ -16,10 +16,8 @@ import javafx.util.StringConverter;
 
 import fr.univ.projet.model.User;
 import fr.univ.projet.model.Portefeuille;
-import fr.univ.projet.model.Transaction;
-import fr.univ.projet.service.AnalyseurPerformance;
-import fr.univ.projet.service.SessionManager;
-
+import fr.univ.projet.service.AnalyzerPerformance; // Utilisation de votre classe AnalyzerPerformance
+ 
 import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +31,7 @@ public class MainController {
 
     // Indicateurs de performance
     @FXML private Label totalValueLabel, profitLabel, profitPercentageLabel, cashLabel;
+    @FXML private Label analysisStatusLabel; // Label pour l'analyse créative (Bénéficiaire/Déficit)
     @FXML private ComboBox<Portefeuille> portfolioSelector; 
     @FXML private Button btnRefresh;
 
@@ -125,29 +124,48 @@ public class MainController {
             this.monPortefeuille = currentUser.getPortefeuilles().get(0);
             rafraichirInterface();
         }
-    }
+    } 
 
     private void rafraichirInterface() {
-        if (monPortefeuille == null) return;
+        if (currentUser == null || currentUser.getPortefeuilles().isEmpty()) return;
 
-        // 1. Calculs des indicateurs
-        double totalTitres = monPortefeuille.calculerValeurTotale(); // Valeur actuelle au marché
-        double cash = monPortefeuille.getCash();
-        double valeurTotaleAffiche = totalTitres + cash; // Patrimoine total
+        double totalCash = 0;
+        double totalTitres = 0;
+        double totalInvesti = 0;
 
-        double profitTotal = AnalyseurPerformance.calculerPlusValueTotale(monPortefeuille);
-        double coutInvesti = totalTitres - profitTotal;
-        double pourcentagePerf = (coutInvesti > 0) ? (profitTotal / coutInvesti) * 100 : 0;
+        // 1️⃣ Calcul des totaux sur tous les portefeuilles
+        for (Portefeuille p : currentUser.getPortefeuilles()) {
+            totalCash += p.getCash();
+            totalTitres += p.calculerValeurTotale() - p.getCash(); // juste la valeur des actifs
+            totalInvesti += p.getInvestissementInitial();          // somme de l'investissement initial
+        }
 
-        // 2. Mise à jour de l'affichage
-        String devise = monPortefeuille.getMonnaieReference();
-        totalValueLabel.setText(String.format("%.2f %s", valeurTotaleAffiche, devise));
-        cashLabel.setText(String.format("%.2f %s", cash, devise));
+        // 2️⃣ Calcul du profit global et du pourcentage
+        double profitTotal = totalTitres + totalCash - totalInvesti;
+        double pourcentagePerf = (totalInvesti > 0) ? (profitTotal / totalInvesti) * 100 : 0;
+
+        // 3️⃣ Mise à jour de l'UI
+        String devise = currentUser.getPortefeuilles().get(0).getMonnaieReference(); // on suppose la même monnaie
+        totalValueLabel.setText(String.format("%.2f %s", totalTitres + totalCash, devise));
+        cashLabel.setText(String.format("%.2f %s", totalCash, devise));
         profitLabel.setText(String.format("%+.2f %s", profitTotal, devise));
         profitPercentageLabel.setText(String.format("%+.2f%%", pourcentagePerf));
 
         appliquerStyleProfit(profitTotal);
 
+        // 4️⃣ Analyse créative sur chaque portefeuille
+        if (analysisStatusLabel != null) {
+            double ratioTempsVertTotal = 0;
+            for (Portefeuille p : currentUser.getPortefeuilles()) {
+                Map<String, Object> analyse = AnalyzerPerformance.analyserConstancePerformance(p);
+                ratioTempsVertTotal += (double) analyse.get("pourcentageTempsVert");
+            }
+            double moyenneTempsVert = ratioTempsVertTotal / currentUser.getPortefeuilles().size();
+            analysisStatusLabel.setText(String.format("Profil global : %.0f%% du temps bénéficiaire", moyenneTempsVert));
+            analysisStatusLabel.setStyle("-fx-text-fill: " + (moyenneTempsVert >= 50 ? "#10b981" : "#ef4444"));
+        }
+
+        // 5️⃣ Mise à jour des graphiques si le dashboard est affiché
         if (rootPane.getCenter() == dashboardView) {
             majLineChart();
             majPieChart();
@@ -157,7 +175,7 @@ public class MainController {
     private void majPieChart() {
         allocationChart.getData().clear();
         
-        // Groupement par Ticker des actifs réellement possédés
+        // Groupement par Ticker (Actif réel)
         Map<String, Double> repartition = monPortefeuille.getTransactions().stream()
                 .filter(t -> t.getActifs() != null && !t.getActifs().isEmpty())
                 .collect(Collectors.groupingBy(
@@ -169,33 +187,40 @@ public class MainController {
             PieChart.Data data = new PieChart.Data(ticker, valeur);
             allocationChart.getData().add(data);
             
-            // Ajout d'un tooltip pour voir la valeur exacte au survol
             Tooltip.install(data.getNode(), new Tooltip(String.format("%s: %.2f %s", 
                 ticker, valeur, monPortefeuille.getMonnaieReference())));
         });
     }
 
     private void majLineChart() {
-        performanceChart.getData().clear();
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Valeur historique");
+    performanceChart.getData().clear();
 
-        monPortefeuille.getHistoriqueValeurs().forEach((date, valeur) -> {
-            series.getData().add(new XYChart.Data<>(date, valeur));
+    // For each portefeuille, create a separate series
+    for (Portefeuille p : currentUser.getPortefeuilles()) {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(p.getNom()); // The line will be named after the portfolio
+
+        // For each date, calculate profit/delta for this portfolio
+        p.getHistoriqueValeurs().forEach((date, valeurTotale) -> {
+            double invested = p.getInvestissementInitialJusqua(date);
+            double delta = valeurTotale - invested;
+            series.getData().add(new XYChart.Data<>(date.toString(), delta));
         });
+
         performanceChart.getData().add(series);
     }
+}
 
     private void appliquerStyleProfit(double profit) {
-        profitLabel.getStyleClass().removeAll("profit-positive", "profit-negative");
-        profitPercentageLabel.getStyleClass().removeAll("profit-pill-positive", "profit-pill-negative");
-        
-        if (profit >= 0) {
-            profitLabel.getStyleClass().add("profit-positive");
-            profitPercentageLabel.getStyleClass().add("profit-pill-positive");
-        } else {
-            profitLabel.getStyleClass().add("profit-negative");
-            profitPercentageLabel.getStyleClass().add("profit-pill-negative");
+            profitLabel.getStyleClass().removeAll("profit-positive", "profit-negative");
+            profitPercentageLabel.getStyleClass().removeAll("profit-pill-positive", "profit-pill-negative");
+            
+            if (profit >= 0) {
+                profitLabel.getStyleClass().add("profit-positive");
+                profitPercentageLabel.getStyleClass().add("profit-pill-positive");
+            } else {
+                profitLabel.getStyleClass().add("profit-negative");
+                profitPercentageLabel.getStyleClass().add("profit-pill-negative");
+            }
         }
     }
-}
