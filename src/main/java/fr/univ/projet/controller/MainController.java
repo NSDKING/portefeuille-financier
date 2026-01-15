@@ -109,7 +109,7 @@ public class MainController {
         portfolioSelector.getItems().setAll(currentUser.getPortefeuilles());
         portfolioSelector.setConverter(new StringConverter<Portefeuille>() {
             @Override
-            public String toString(Portefeuille p) { return (p == null) ? "" : p.getNom(); }
+            public String toString(Portefeuille p) { return (p == null) ? "" : p.getDescription(); }
             @Override
             public Portefeuille fromString(String s) { return null; }
         });
@@ -198,7 +198,7 @@ public class MainController {
     // For each portefeuille, create a separate series
     for (Portefeuille p : currentUser.getPortefeuilles()) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName(p.getNom()); // The line will be named after the portfolio
+        series.setName(p.getDescription()); // The line will be named after the portfolio
 
         // For each date, calculate profit/delta for this portfolio
         p.getHistoriqueValeurs().forEach((date, valeurTotale) -> {
